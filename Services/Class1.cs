@@ -1,7 +1,5 @@
-﻿namespace Services
-{
-	public class Class1
-	{
+﻿namespace Services;
 
-	}
+public class Class1
+{
 }
