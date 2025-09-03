@@ -12,6 +12,8 @@ public class Comment
 	public Post Post { get; set; }
 	public int PostId { get; set; }
 
-	public Comment? CommentReply { get; set; }
-	public int? CommentReplyId { get; set; }
+	public Comment? ParentComment { get; set; }
+	public int? ParentCommentId { get; set; }
+
+	public ICollection<Comment> Replies { get; set; } = new List<Comment>();
 }
