@@ -2,6 +2,7 @@
 
 public class Membership
 {
+	// Composite  key config in config
 	public string UserId { get; set; }
 	public ApplicationUser User { get; set; }
 

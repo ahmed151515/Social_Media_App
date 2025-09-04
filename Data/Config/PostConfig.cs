@@ -11,10 +11,10 @@ public class PostConfig : IEntityTypeConfiguration<Post>
 		builder.HasKey(e => e.Id);
 		builder.Property(e => e.Id).ValueGeneratedOnAdd();
 
-		builder.Property(e => e.Title).HasColumnType("NVARCHAR")
-			.HasMaxLength(30);
-		builder.Property(e => e.Content).HasColumnType("NVARCHAR")
-			.HasMaxLength(2000);
+		//builder.Property(e => e.Title).HasColumnType("NVARCHAR")
+		//	.HasMaxLength(30);
+		//builder.Property(e => e.Content).HasColumnType("NVARCHAR")
+		//	.HasMaxLength(2000);
 		builder.Property(e => e.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
 
 

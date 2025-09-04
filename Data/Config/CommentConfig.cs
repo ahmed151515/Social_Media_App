@@ -12,8 +12,8 @@ public class CommentConfig : IEntityTypeConfiguration<Comment>
 		builder.Property(e => e.Id).ValueGeneratedOnAdd();
 
 
-		builder.Property(e => e.Content).HasColumnType("NVARCHAR")
-			.HasMaxLength(2000);
+		//builder.Property(e => e.Content).HasColumnType("NVARCHAR")
+		//	.HasMaxLength(2000);
 		builder.Property(e => e.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
 
 

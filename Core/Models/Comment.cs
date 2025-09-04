@@ -1,10 +1,14 @@
-﻿namespace Core.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Core.Models;
 
 public class Comment
 {
 	public int Id { get; set; }
 
-	public string Content { get; set; }
+	[Required] [MaxLength(300)] public string Content { get; set; }
+
+	// default value in Config
 	public DateTime CreatedAt { get; set; }
 
 	public ApplicationUser User { get; set; }
