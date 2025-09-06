@@ -1,3 +1,11 @@
+using Core.Interfaces;
+using Core.Interfaces.Repository;
+using Core.Models;
+using Data;
+using Data.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace Web;
 
 public class Program
@@ -9,6 +17,26 @@ public class Program
 		// Add services to the container.
 		builder.Services.AddControllersWithViews();
 
+		builder.Services.AddDbContext<AppDbContext>(conf =>
+			conf.UseSqlServer(
+				builder.Configuration.GetConnectionString("dev")));
+
+		builder.Services.AddIdentity<ApplicationUser, IdentityRole>(o =>
+			{
+				o.Password.RequireDigit = true;
+				o.Password.RequireNonAlphanumeric = false;
+				o.Password.RequireUppercase = false;
+
+				o.User.RequireUniqueEmail = true;
+			})
+			.AddEntityFrameworkStores<AppDbContext>();
+
+		builder.Services.AddScoped<IRepository<Post>, PostRepository>();
+		builder.Services.AddScoped<IRepository<Comment>, CommentRepository>();
+		builder.Services
+			.AddScoped<IRepository<Community>, CommunityRepository>();
+		builder.Services.AddScoped<IUnitOfWork, IUnitOfWork>();
+
 		var app = builder.Build();
 
 		// Configure the HTTP request pipeline.
@@ -16,7 +44,7 @@ public class Program
 		{
 			app.UseExceptionHandler("/Home/Error");
 			// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-			app.UseHsts();
+			// app.UseHsts();
 		}
 
 		app.UseHttpsRedirection();
@@ -24,6 +52,7 @@ public class Program
 
 		app.UseRouting();
 
+		app.UseAuthentication();
 		app.UseAuthorization();
 
 		app.MapControllerRoute(
