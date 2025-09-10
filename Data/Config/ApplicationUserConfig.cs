@@ -8,6 +8,6 @@ public class ApplicationUserConfig : IEntityTypeConfiguration<ApplicationUser>
 {
 	public void Configure(EntityTypeBuilder<ApplicationUser> builder)
 	{
-
+		builder.HasQueryFilter(u => u.IsDeleted != true);
 	}
 }

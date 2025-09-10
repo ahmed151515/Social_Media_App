@@ -19,6 +19,8 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
 	{
 		base.OnModelCreating(builder);
 
+
+
 		builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 	}
 }

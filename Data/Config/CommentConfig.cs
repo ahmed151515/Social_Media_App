@@ -27,6 +27,9 @@ public class CommentConfig : IEntityTypeConfiguration<Comment>
 
 		builder.HasOne(e => e.Post).WithMany(e => e.Comments)
 			.HasForeignKey(e => e.PostId).IsRequired()
-			.OnDelete(DeleteBehavior.Cascade);
+			.OnDelete(DeleteBehavior.Restrict);
+
+		builder.HasQueryFilter(c => c.IsDeleted != true);
+
 	}
 }

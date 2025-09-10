@@ -29,9 +29,10 @@ public class CommentRepository(AppDbContext context) : IRepository<Comment>
 	public void Delete(Comment comment)
 	{
 		ArgumentNullException.ThrowIfNull(comment);
-
 		context.Comments.Remove(comment);
 	}
+
+
 
 	public void Update(Comment comment)
 	{

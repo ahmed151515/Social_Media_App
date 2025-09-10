@@ -20,10 +20,13 @@ public class PostConfig : IEntityTypeConfiguration<Post>
 
 		builder.HasOne(e => e.User).WithMany(e => e.Posts)
 			.HasForeignKey(e => e.UserId)
-			.OnDelete(DeleteBehavior.Cascade);
+			.OnDelete(DeleteBehavior.Restrict);
 
 		builder.HasOne(e => e.Community).WithMany(e => e.Posts)
 			.HasForeignKey(e => e.CommunityId).IsRequired()
-			.OnDelete(DeleteBehavior.Cascade);
+			.OnDelete(DeleteBehavior.Restrict);
+
+		builder.HasQueryFilter(p => p.IsDeleted != true);
+
 	}
 }

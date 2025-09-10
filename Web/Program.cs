@@ -1,10 +1,13 @@
 using Core.Interfaces;
 using Core.Interfaces.Repository;
+using Core.Interfaces.Services;
 using Core.Models;
 using Data;
+using Data.Interceptors;
 using Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Services;
 
 namespace Web;
 
@@ -19,7 +22,9 @@ public class Program
 
 		builder.Services.AddDbContext<AppDbContext>(conf =>
 			conf.UseSqlServer(
-				builder.Configuration.GetConnectionString("dev")));
+				builder.Configuration.GetConnectionString("dev"))
+			.AddInterceptors(new SoftDeleteInterceptor())
+			);
 
 		builder.Services.AddIdentity<ApplicationUser, IdentityRole>(o =>
 			{
@@ -33,9 +38,14 @@ public class Program
 
 		builder.Services.AddScoped<IRepository<Post>, PostRepository>();
 		builder.Services.AddScoped<IRepository<Comment>, CommentRepository>();
-		builder.Services
-			.AddScoped<IRepository<Community>, CommunityRepository>();
-		builder.Services.AddScoped<IUnitOfWork, IUnitOfWork>();
+
+		builder.Services.AddScoped<IRepository<Community>, CommunityRepository>();
+		builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+		builder.Services.AddScoped<ICommentService, CommentService>();
+		builder.Services.AddScoped<IPostService, PostService>();
+		builder.Services.AddScoped<ICommunityService, CommunityService>();
+
 
 		var app = builder.Build();
 

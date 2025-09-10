@@ -29,5 +29,8 @@ public class CommunityConfig : IEntityTypeConfiguration<Community>
 					.HasForeignKey(e => e.CommunityId)
 					.OnDelete(DeleteBehavior.Cascade)
 			);
+
+		builder.HasQueryFilter(c => c.IsDeleted != true);
+
 	}
 }
