@@ -11,10 +11,10 @@ public class UnitOfWork(
 	AppDbContext context)
 	: IUnitOfWork
 {
-	public IRepository<Post> PostRepository { get; } = postRepository;
-	public IRepository<Comment> CommentRepository { get; } = commentRepository;
+	public IBasicRepository<Post> PostRepository { get; } = postRepository;
+	public IBasicRepository<Comment> CommentRepository { get; } = commentRepository;
 
-	public IRepository<Community> CommunityRepository { get; } =
+	public IBasicRepository<Community> CommunityRepository { get; } =
 		communityRepository;
 
 

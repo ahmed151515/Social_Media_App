@@ -5,9 +5,9 @@ namespace Core.Interfaces;
 
 public interface IUnitOfWork
 {
-	public IRepository<Post> PostRepository { get; }
-	public IRepository<Comment> CommentRepository { get; }
-	public IRepository<Community> CommunityRepository { get; }
+	public IBasicRepository<Post> PostRepository { get; }
+	public IBasicRepository<Comment> CommentRepository { get; }
+	public IBasicRepository<Community> CommunityRepository { get; }
 
 	public Task<int> SaveChangeAsync();
 	public Task BeginTransactionAsync();

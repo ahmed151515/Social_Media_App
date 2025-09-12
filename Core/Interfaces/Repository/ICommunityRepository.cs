@@ -2,7 +2,7 @@ using Core.Models;
 
 namespace Core.Interfaces.Repository;
 
-public interface ICommunityRepository : IRepository<Community>
+public interface ICommunityRepository : IBasicRepository<Community>
 {
 
 }

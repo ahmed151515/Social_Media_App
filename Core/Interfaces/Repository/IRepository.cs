@@ -1,6 +1,6 @@
 namespace Core.Interfaces.Repository;
 
-public interface IRepository<TEntity>
+public interface IBasicRepository<TEntity>
 {
 	Task<TEntity?> GetByIdAsync(int id);
 	IQueryable<TEntity> GetAll();
