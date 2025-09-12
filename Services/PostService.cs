@@ -1,12 +1,13 @@
 using Core.Interfaces;
 using Core.Interfaces.Services;
 using Core.Models;
+using Data.Extension;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Services;
 
-public class PostService(IUnitOfWork unitOfWork) : IService<Post>
+public class PostService(IUnitOfWork unitOfWork) : IPostService
 {
 	public async Task<IEnumerable<Post>> GetAllAsync()
 	{
@@ -19,17 +20,7 @@ public class PostService(IUnitOfWork unitOfWork) : IService<Post>
 		return await unitOfWork.PostRepository.GetAllWithIncludes().ToListAsync();
 	}
 
-	public async Task<IEnumerable<Post>> PaginateAsync(int page = 1, int pageSize = 20)
-	{
-		// the check of page and pagesize is in Repository
 
-		return await unitOfWork.PostRepository.Paginate(page, pageSize).ToListAsync();
-	}
-
-	public async Task<IEnumerable<Post>> PaginateWithIncludeAsync(int page = 1, int pageSize = 20)
-	{
-		return await unitOfWork.PostRepository.PaginateWithIncludes(page, pageSize).ToListAsync();
-	}
 
 	public async Task<Post?> GetByIdAsync(int id)
 	{
@@ -96,5 +87,15 @@ public class PostService(IUnitOfWork unitOfWork) : IService<Post>
 		await unitOfWork.SaveChangeAsync();
 	}
 
+	public async Task<IEnumerable<Post>> PagingAsync(int page, int size)
+	{
 
+		return await unitOfWork.PostRepository.GetAll().PaginateAsync(page, size);
+
+	}
+
+	public async Task<int> CountAsync()
+	{
+		return await unitOfWork.PostRepository.GetAll().CountAsync();
+	}
 }

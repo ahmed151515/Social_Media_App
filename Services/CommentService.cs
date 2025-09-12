@@ -1,12 +1,13 @@
 using Core.Interfaces;
 using Core.Interfaces.Services;
 using Core.Models;
+using Data.Extension;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Services;
 
-public class CommentService(IUnitOfWork unitOfWork) : IService<Comment>
+public class CommentService(IUnitOfWork unitOfWork) : ICommentService
 {
 	public async Task<IEnumerable<Comment>> GetAllAsync()
 	{
@@ -19,17 +20,7 @@ public class CommentService(IUnitOfWork unitOfWork) : IService<Comment>
 		return await unitOfWork.CommentRepository.GetAllWithIncludes().ToListAsync();
 	}
 
-	public async Task<IEnumerable<Comment>> PaginateAsync(int page = 1, int pageSize = 20)
-	{
-		// the check of page and pagesize is in Repository
 
-		return await unitOfWork.CommentRepository.Paginate(page, pageSize).ToListAsync();
-	}
-
-	public async Task<IEnumerable<Comment>> PaginateWithIncludeAsync(int page = 1, int pageSize = 20)
-	{
-		return await unitOfWork.CommentRepository.PaginateWithIncludes(page, pageSize).ToListAsync();
-	}
 
 	public async Task<Comment?> GetByIdAsync(int id)
 	{
@@ -93,5 +84,17 @@ public class CommentService(IUnitOfWork unitOfWork) : IService<Comment>
 		unitOfWork.CommentRepository.Delete(comment);
 
 		await unitOfWork.SaveChangeAsync();
+	}
+
+	public async Task<IEnumerable<Comment>> PagingAsync(int page, int size)
+	{
+
+		return await unitOfWork.CommentRepository.GetAll().PaginateAsync(page, size);
+
+	}
+
+	public async Task<int> CountAsync()
+	{
+		return await unitOfWork.CommentRepository.GetAll().CountAsync();
 	}
 }

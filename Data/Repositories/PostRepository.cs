@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories;
 
-public class PostRepository(AppDbContext context) : IRepository<Post>
+public class PostRepository(AppDbContext context) : IPostRepository
 {
 
 	public IQueryable<Post> GetAll()
@@ -20,21 +20,7 @@ public class PostRepository(AppDbContext context) : IRepository<Post>
 			.AsNoTracking();
 	}
 
-	public IQueryable<Post> Paginate(int page = 1, int pageSize = 20)
-	{
-		if (page <= 0) page = 1;
-		if (pageSize <= 0) pageSize = 20;
 
-		return GetAll().Skip((page - 1) * pageSize).Take(pageSize);
-	}
-
-	public IQueryable<Post> PaginateWithIncludes(int page = 1, int pageSize = 20)
-	{
-		if (page <= 0) page = 1;
-		if (pageSize <= 0) pageSize = 20;
-
-		return GetAllWithIncludes().Skip((page - 1) * pageSize).Take(pageSize);
-	}
 
 	public async Task<Post?> GetByIdAsync(int id)
 	{

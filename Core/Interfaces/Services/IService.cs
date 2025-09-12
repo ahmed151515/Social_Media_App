@@ -2,13 +2,13 @@ using System.Linq.Expressions;
 
 namespace Core.Interfaces.Services;
 
-public interface IService<TEntity>
+public interface IBasicService<TEntity>
 {
 	Task<IEnumerable<TEntity>> GetAllAsync();
 	Task<IEnumerable<TEntity>> GetAllWithIncludesAsync();
-	Task<IEnumerable<TEntity>> PaginateAsync(int page = 1, int pageSize = 20);
-	Task<IEnumerable<TEntity>> PaginateWithIncludeAsync(int page = 1, int pageSize = 20);
 
+	Task<IEnumerable<TEntity>> PagingAsync(int page, int size);
+	Task<int> CountAsync();
 	Task<TEntity?> GetByIdAsync(int id);
 	Task<TEntity?> GetByIdWithIncludeAsync(int id);
 
@@ -20,3 +20,5 @@ public interface IService<TEntity>
 	Task UpdateAsync(int id, TEntity postToUpdate);
 	Task DeleteAsync(int id);
 }
+
+

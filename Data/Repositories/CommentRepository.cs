@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories;
 
-public class CommentRepository(AppDbContext context) : IRepository<Comment>
+public class CommentRepository(AppDbContext context) : ICommentRepository
 {
 	public IQueryable<Comment> GetAll()
 	{
@@ -20,20 +20,7 @@ public class CommentRepository(AppDbContext context) : IRepository<Comment>
 			.Include(c => c.Replies)
 			.AsNoTracking();
 	}
-	public IQueryable<Comment> Paginate(int page = 1, int pageSize = 20)
-	{
-		if (page <= 0) page = 1;
-		if (pageSize <= 0) pageSize = 20;
 
-		return GetAll().Skip((page - 1) * pageSize).Take(pageSize);
-	}
-	public IQueryable<Comment> PaginateWithIncludes(int page = 1, int pageSize = 20)
-	{
-		if (page <= 0) page = 1;
-		if (pageSize <= 0) pageSize = 20;
-
-		return GetAllWithIncludes().Skip((page - 1) * pageSize).Take(pageSize);
-	}
 	public async Task<Comment?> GetByIdAsync(int id)
 	{
 		var comment =

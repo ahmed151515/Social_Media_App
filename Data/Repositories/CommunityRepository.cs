@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories;
 
-public class CommunityRepository(AppDbContext context) : IRepository<Community>
+public class CommunityRepository(AppDbContext context) : ICommunityRepository
 {
 	public IQueryable<Community> GetAll()
 	{
@@ -19,21 +19,7 @@ public class CommunityRepository(AppDbContext context) : IRepository<Community>
 			.AsNoTracking();
 	}
 
-	public IQueryable<Community> Paginate(int page = 1, int pageSize = 20)
-	{
-		if (page <= 0) page = 1;
-		if (pageSize <= 0) pageSize = 20;
 
-		return GetAll().Skip((page - 1) * pageSize).Take(pageSize);
-	}
-
-	public IQueryable<Community> PaginateWithIncludes(int page = 1, int pageSize = 20)
-	{
-		if (page <= 0) page = 1;
-		if (pageSize <= 0) pageSize = 20;
-
-		return GetAllWithIncludes().Skip((page - 1) * pageSize).Take(pageSize);
-	}
 
 	public async Task<Community?> GetByIdAsync(int id)
 	{

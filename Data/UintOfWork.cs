@@ -5,9 +5,9 @@ using Core.Models;
 namespace Data;
 
 public class UnitOfWork(
-	IRepository<Post> postRepository,
-	IRepository<Comment> commentRepository,
-	IRepository<Community> communityRepository,
+	IPostRepository postRepository,
+	ICommentRepository commentRepository,
+	ICommunityRepository communityRepository,
 	AppDbContext context)
 	: IUnitOfWork
 {

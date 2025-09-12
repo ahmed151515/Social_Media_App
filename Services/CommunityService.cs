@@ -1,12 +1,13 @@
 ﻿using Core.Interfaces;
 using Core.Interfaces.Services;
 using Core.Models;
+using Data.Extension;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Services;
 
-public class CommunityService(IUnitOfWork unitOfWork) : IService<Community>
+public class CommunityService(IUnitOfWork unitOfWork) : ICommunityService
 {
 
 
@@ -22,17 +23,7 @@ public class CommunityService(IUnitOfWork unitOfWork) : IService<Community>
 		return await unitOfWork.CommunityRepository.GetAllWithIncludes().ToListAsync();
 	}
 
-	public async Task<IEnumerable<Community>> PaginateAsync(int page = 1, int pageSize = 20)
-	{
-		// the check of page and pagesize is in Repository
 
-		return await unitOfWork.CommunityRepository.Paginate(page, pageSize).ToListAsync();
-	}
-
-	public async Task<IEnumerable<Community>> PaginateWithIncludeAsync(int page = 1, int pageSize = 20)
-	{
-		return await unitOfWork.CommunityRepository.PaginateWithIncludes(page, pageSize).ToListAsync();
-	}
 
 	public async Task<Community?> GetByIdAsync(int id)
 	{
@@ -95,5 +86,17 @@ public class CommunityService(IUnitOfWork unitOfWork) : IService<Community>
 		unitOfWork.CommunityRepository.Delete(community);
 
 		await unitOfWork.SaveChangeAsync();
+	}
+
+	public async Task<IEnumerable<Community>> PagingAsync(int page, int size)
+	{
+
+		return await unitOfWork.CommunityRepository.GetAll().PaginateAsync(page, size);
+
+	}
+
+	public async Task<int> CountAsync()
+	{
+		return await unitOfWork.CommunityRepository.GetAll().CountAsync();
 	}
 }
