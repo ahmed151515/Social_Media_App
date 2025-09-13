@@ -93,6 +93,12 @@ public class PostService(IUnitOfWork unitOfWork) : IPostService
 		return await unitOfWork.PostRepository.GetAll().PaginateAsync(page, size);
 
 	}
+	public async Task<IEnumerable<Post>> PagingWithIncludesAsync(int page, int size)
+	{
+
+		return await unitOfWork.PostRepository.GetAllWithIncludes().PaginateAsync(page, size);
+
+	}
 
 	public async Task<int> CountAsync()
 	{
