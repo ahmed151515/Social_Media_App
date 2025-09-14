@@ -36,15 +36,16 @@ public class Program
 			})
 			.AddEntityFrameworkStores<AppDbContext>();
 
-		builder.Services.AddScoped<IRepository<Post>, PostRepository>();
-		builder.Services.AddScoped<IRepository<Comment>, CommentRepository>();
+		builder.Services.AddScoped<IPostRepository, PostRepository>();
+		builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
-		builder.Services.AddScoped<IRepository<Community>, CommunityRepository>();
+		builder.Services.AddScoped<ICommunityRepository, CommunityRepository>();
 		builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-		builder.Services.AddScoped<IService<Comment>, CommentService>();
-		builder.Services.AddScoped<IService<Post>, PostService>();
-		builder.Services.AddScoped<IService<Community>, CommunityService>();
+		builder.Services.AddScoped<ICommentService, CommentService>();
+		builder.Services.AddScoped<IPostService, PostService>();
+		builder.Services.AddScoped<ICommunityService, CommunityService>();
+		builder.Services.AddScoped<IUserService, UserService>();
 
 
 		var app = builder.Build();

@@ -1,0 +1,49 @@
+﻿@model Core.ViewModel.PostCardViewModel
+
+
+<div class="card mb-3 shadow-sm">
+    <div class="card-body">
+
+        <h5 class="card-title">
+            <a class="text-decoration-none" asp-controller="Posts" asp-action="Details" asp-route-id="@Model.Id">
+                @Model.Title
+            </a>
+        </h5>
+
+        <div class="card-subtitle mb-2 text-muted small">
+            <span>Posted on @Model.CreatedAt.ToString("MMM dd, yyyy")</span>
+
+          
+            @*
+                if i  show posts in community this will null
+            *@
+            @if (!string.IsNullOrEmpty(Model.CommunityName))
+            {
+                <span>
+                    in 
+                    <a class="fw-bold text-muted text-decoration-none" asp-controller="Communities" asp-action="Details" asp-route-id="@Model.CommunityId">
+                        r/@Model.CommunityName
+                    </a>
+                </span>
+            }
+            @*
+                if i  show posts in Profile this will null
+            *@
+            @if (!string.IsNullOrEmpty(Model.AuthorName))
+            {
+                <span>
+                    by
+                    <a class="fw-bold text-muted text-decoration-none" asp-controller="Account" asp-action="Profile" asp-route-username="@Model.AuthorName">
+                        u/@Model.AuthorName
+                    </a>
+                </span>
+            }
+        </div>
+        
+        
+
+        <hr />
+        
+
+    </div>
+</div>

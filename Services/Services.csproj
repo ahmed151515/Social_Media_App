@@ -7,8 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Core\Core.csproj"/>
-        <ProjectReference Include="..\Data\Data.csproj"/>
+      <PackageReference Include="X.PagedList.EF" Version="10.5.7" />
+      <PackageReference Include="X.PagedList.Mvc.Core" Version="10.5.9" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Core\Core.csproj" />
+        <ProjectReference Include="..\Data\Data.csproj" />
     </ItemGroup>
 
 </Project>

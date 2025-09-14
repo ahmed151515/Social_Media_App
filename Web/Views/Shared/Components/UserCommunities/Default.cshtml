@@ -1,0 +1,13 @@
+﻿@model List<Community>
+
+<h5>Your Communities</h5>
+<ul class="nav flex-column">
+    @foreach (var community in Model)
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Communities" asp-action="Details" asp-route-id="@community.Id">
+                @community.Name
+            </a>
+        </li>
+    }
+</ul>
