@@ -1,6 +1,5 @@
 using Core.Interfaces;
 using Core.Interfaces.Repository;
-using Core.Models;
 
 namespace Data;
 
@@ -8,15 +7,16 @@ public class UnitOfWork(
 	IPostRepository postRepository,
 	ICommentRepository commentRepository,
 	ICommunityRepository communityRepository,
+	IMembershipRepository membershipRepository,
 	AppDbContext context)
 	: IUnitOfWork
 {
-	public IBasicRepository<Post> PostRepository { get; } = postRepository;
-	public IBasicRepository<Comment> CommentRepository { get; } = commentRepository;
+	public IPostRepository PostRepository { get; } = postRepository;
+	public ICommentRepository CommentRepository { get; } = commentRepository;
 
-	public IBasicRepository<Community> CommunityRepository { get; } =
-		communityRepository;
+	public ICommunityRepository CommunityRepository { get; } = communityRepository;
 
+	public IMembershipRepository MembershipRepository { get; } = membershipRepository;
 
 	public async Task<int> SaveChangeAsync()
 	{

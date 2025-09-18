@@ -21,29 +21,33 @@ namespace Services
 
 
 
-		public async Task<IPagedList<PostCardViewModel>> GetPostsOfUserByIdAsync(string userId, int page, int size)
-		{
-			var posts = userManager.Users.Where(e => e.Id == userId).SelectMany(e => e.Posts);
+		//public async Task<IPagedList<PostCardViewModel>> GetPostsOfUserByIdAsync(string userId, int page)
+		//{
+		//	var size = 20;
 
-			var viewModel = posts
-				.AsNoTracking()
-				.Include(e => e.Community)
-				.OrderByDescending(e => e.CreatedAt)
-				.Select(e => new PostCardViewModel
-				{
-					AuthorName = null, // it is null tihs is used in Account not make sessns to show username with post
-					AuthorId = null,
-					CommunityName = e.Community.Name,
-					CommunityId = e.CommunityId,
-					Title = e.Title,
-					CreatedAt = e.CreatedAt,
-					Id = e.Id
+		//	var posts = userManager.Users.Where(e => e.Id == userId).SelectMany(e => e.Posts);
 
-				});
-			return await viewModel.ToPagedListAsync(page, size);
-		}
-		public async Task<IPagedList<PostCardViewModel>> GetPostsOfUserByUserNameAsync(string userName, int page, int size)
+		//	var viewModel = posts
+		//		.AsNoTracking()
+		//		.Include(e => e.Community)
+		//		.OrderByDescending(e => e.CreatedAt)
+		//		.Select(e => new PostCardViewModel
+		//		{
+		//			AuthorName = null, // it is null tihs is used in Account not make sessns to show username with post
+		//			AuthorId = null,
+		//			CommunityName = e.Community.Name,
+		//			CommunityId = e.CommunityId,
+		//			Title = e.Title,
+		//			CreatedAt = e.CreatedAt,
+		//			Id = e.Id
+
+		//		});
+		//	return await viewModel.ToPagedListAsync(page, size);
+		//}
+		public async Task<IPagedList<PostCardViewModel>> GetPostsOfUserByUserNameAsync(string userName, int page)
 		{
+			var size = 20;
+
 			var posts = userManager.Users.Where(e => e.UserName == userName).SelectMany(e => e.Posts);
 
 			var viewModel = posts

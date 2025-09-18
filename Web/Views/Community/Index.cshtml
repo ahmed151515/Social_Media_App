@@ -1,0 +1,10 @@
+﻿@model IPagedList<Community>
+
+<a asp-action="Create" class="btn btn-primary">Create new Community</a>
+<hr />
+@foreach (var community in Model)
+{
+	<h3> <a asp-action="Details" asp-route-id="@community.Id">@community.Name</a></h3>
+	<p>@community.Description</p>
+	<hr />
+}

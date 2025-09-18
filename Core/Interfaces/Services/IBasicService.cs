@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using X.PagedList;
 
 namespace Core.Interfaces.Services;
 
@@ -7,7 +8,7 @@ public interface IBasicService<TEntity>
 	Task<IEnumerable<TEntity>> GetAllAsync();
 	Task<IEnumerable<TEntity>> GetAllWithIncludesAsync();
 
-	Task<IEnumerable<TEntity>> PagingAsync(int page, int size);
+	Task<IPagedList<TEntity>> PagingAsync(int page);
 	Task<int> CountAsync();
 	Task<TEntity?> GetByIdAsync(int id);
 	Task<TEntity?> GetByIdWithIncludeAsync(int id);

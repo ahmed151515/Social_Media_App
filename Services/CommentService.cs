@@ -1,9 +1,10 @@
 using Core.Interfaces;
 using Core.Interfaces.Services;
 using Core.Models;
-using Data.Extension;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using X.PagedList;
+using X.PagedList.EF;
 
 namespace Services;
 
@@ -86,10 +87,12 @@ public class CommentService(IUnitOfWork unitOfWork) : ICommentService
 		await unitOfWork.SaveChangeAsync();
 	}
 
-	public async Task<IEnumerable<Comment>> PagingAsync(int page, int size)
+	public async Task<IPagedList<Comment>> PagingAsync(int page)
 	{
 
-		return await unitOfWork.CommentRepository.GetAll().PaginateAsync(page, size);
+		if (page < 1) page = 1;
+		var size = 20;
+		return await unitOfWork.CommentRepository.GetAll().OrderByDescending(e => e.CreatedAt).ToPagedListAsync(page, size);
 
 	}
 

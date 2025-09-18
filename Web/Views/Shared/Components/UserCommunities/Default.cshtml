@@ -5,7 +5,7 @@
     @foreach (var community in Model)
     {
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Communities" asp-action="Details" asp-route-id="@community.Id">
+            <a class="nav-link" asp-controller="Community" asp-action="Details" asp-route-id="@community.Id">
                 @community.Name
             </a>
         </li>

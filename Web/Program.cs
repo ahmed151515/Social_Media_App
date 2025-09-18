@@ -38,14 +38,15 @@ public class Program
 
 		builder.Services.AddScoped<IPostRepository, PostRepository>();
 		builder.Services.AddScoped<ICommentRepository, CommentRepository>();
-
 		builder.Services.AddScoped<ICommunityRepository, CommunityRepository>();
+		builder.Services.AddScoped<IMembershipRepository, MembershipRepository>();
 		builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 		builder.Services.AddScoped<ICommentService, CommentService>();
 		builder.Services.AddScoped<IPostService, PostService>();
 		builder.Services.AddScoped<ICommunityService, CommunityService>();
 		builder.Services.AddScoped<IUserService, UserService>();
+		builder.Services.AddScoped<IMembershipService, MembershipService>();
 
 
 		var app = builder.Build();

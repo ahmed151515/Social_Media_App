@@ -1,4 +1,5 @@
-﻿using Core.Interfaces;
+﻿using Core.Attributes;
+using Core.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace Core.Models;
@@ -8,6 +9,7 @@ public class Community : ISoftDeleteable
 	public int Id { get; set; }
 
 	[Required]
+	[UniueqNameCommunity(ErrorMessage = "Community name has token")]
 	[MinLength(5)]
 	[MaxLength(15)]
 	public string Name { get; set; }

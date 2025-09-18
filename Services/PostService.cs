@@ -1,9 +1,10 @@
 using Core.Interfaces;
 using Core.Interfaces.Services;
 using Core.Models;
-using Data.Extension;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using X.PagedList;
+using X.PagedList.EF;
 
 namespace Services;
 
@@ -87,18 +88,15 @@ public class PostService(IUnitOfWork unitOfWork) : IPostService
 		await unitOfWork.SaveChangeAsync();
 	}
 
-	public async Task<IEnumerable<Post>> PagingAsync(int page, int size)
+	public async Task<IPagedList<Post>> PagingAsync(int page)
 	{
+		if (page < 1) page = 1;
+		var size = 20;
 
-		return await unitOfWork.PostRepository.GetAll().PaginateAsync(page, size);
+		return await unitOfWork.PostRepository.GetAll().OrderByDescending(e => e.CreatedAt).ToPagedListAsync(page, size);
 
 	}
-	public async Task<IEnumerable<Post>> PagingWithIncludesAsync(int page, int size)
-	{
 
-		return await unitOfWork.PostRepository.GetAllWithIncludes().PaginateAsync(page, size);
-
-	}
 
 	public async Task<int> CountAsync()
 	{

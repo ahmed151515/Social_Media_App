@@ -25,5 +25,5 @@
 
     <hr>
 
-    @Html.PagedListPager(Model.posts, page => Url.Action("Profile", new { page }))
+    @Html.PagedListPager(Model.posts, page => Url.Action("Profile", new { page,username=Model.Name }))
 </div>

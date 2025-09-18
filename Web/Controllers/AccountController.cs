@@ -1,9 +1,9 @@
 ﻿using Core.Interfaces.Services;
 using Core.Models;
 using Core.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Web.Controllers
 {
@@ -16,7 +16,7 @@ namespace Web.Controllers
 	{
 		public async Task<IActionResult> Profile(string? userName, int page = 1)
 		{
-			int size = 20;
+
 
 			if (page < 1) page = 1;
 
@@ -28,15 +28,15 @@ namespace Web.Controllers
 			if (await userService.IsExistByNameAsync(userName))
 			{
 				viewModel.Name = userName;
-				viewModel.posts = await userService.GetPostsOfUserByUserNameAsync(userName, page, size);
+				viewModel.posts = await userService.GetPostsOfUserByUserNameAsync(userName, page);
 				viewModel.IsOwner = false;
 
 			}
 			else if (User.Identity.IsAuthenticated)
 			{
-				viewModel.Name = User.Identity.Name;
-				var userId = User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value;
-				viewModel.posts = await userService.GetPostsOfUserByIdAsync(userId, page, size);
+				var name = User.Identity.Name;
+				viewModel.Name = name;
+				viewModel.posts = await userService.GetPostsOfUserByUserNameAsync(name, page);
 
 				viewModel.IsOwner = true;
 			}
@@ -129,6 +129,7 @@ namespace Web.Controllers
 			return View(loginModel);
 		}
 
+		[Authorize]
 		public async Task<IActionResult> Logout()
 		{
 			await signInManager.SignOutAsync();
