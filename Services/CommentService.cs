@@ -16,10 +16,7 @@ public class CommentService(IUnitOfWork unitOfWork) : ICommentService
 			.ToListAsync();
 	}
 
-	public async Task<IEnumerable<Comment>> GetAllWithIncludesAsync()
-	{
-		return await unitOfWork.CommentRepository.GetAllWithIncludes().ToListAsync();
-	}
+
 
 
 
@@ -28,11 +25,7 @@ public class CommentService(IUnitOfWork unitOfWork) : ICommentService
 		return await unitOfWork.CommentRepository.GetByIdAsync(id);
 	}
 
-	public async Task<Comment?> GetByIdWithIncludeAsync(int id)
-	{
-		return await unitOfWork.CommentRepository.GetAllWithIncludes()
-			.SingleOrDefaultAsync(c => c.Id == id);
-	}
+
 
 	public async Task<IEnumerable<Comment>> FindAsync(
 		Expression<Func<Comment, bool>> predicate)
@@ -40,12 +33,7 @@ public class CommentService(IUnitOfWork unitOfWork) : ICommentService
 		return await unitOfWork.CommentRepository.GetAll().Where(predicate)
 			.ToListAsync();
 	}
-	public async Task<IEnumerable<Comment>> FindWithIncludeAsync(
-		Expression<Func<Comment, bool>> predicate)
-	{
-		return await unitOfWork.CommentRepository.GetAllWithIncludes().Where(predicate)
-			.ToListAsync();
-	}
+
 
 
 	public async Task CreateAsync(Comment newComment)
@@ -96,8 +84,5 @@ public class CommentService(IUnitOfWork unitOfWork) : ICommentService
 
 	}
 
-	public async Task<int> CountAsync()
-	{
-		return await unitOfWork.CommentRepository.GetAll().CountAsync();
-	}
+
 }
