@@ -21,7 +21,7 @@
 }
 
 <hr />
-<a asp-action="Create" asp-controller="Post" class="btn btn-primary">Create new Post</a>
+<a asp-action="Create" asp-controller="Post" asp-route-communityId="@Model.Id" class="btn btn-primary">Create new Post</a>
 <hr />
 @foreach(var post in Model.Posts)
 {

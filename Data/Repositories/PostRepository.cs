@@ -15,8 +15,10 @@ public class PostRepository(AppDbContext context) : IPostRepository
 	public IQueryable<Post> GetAllWithIncludes()
 	{
 		return GetAll()
-			.Include(c => c.Comments)
 			.Include(c => c.Community)
+			.Include(c => c.User)
+			.Include(c => c.Comments)
+			.ThenInclude(c => c.Replies)
 			.AsNoTracking();
 	}
 

@@ -20,10 +20,7 @@ public class CommunityService(IUnitOfWork unitOfWork) : ICommunityService
 			.ToListAsync();
 	}
 
-	public async Task<IEnumerable<Community>> GetAllWithIncludesAsync()
-	{
-		return await unitOfWork.CommunityRepository.GetAllWithIncludes().ToListAsync();
-	}
+
 
 
 
@@ -32,11 +29,7 @@ public class CommunityService(IUnitOfWork unitOfWork) : ICommunityService
 		return await unitOfWork.CommunityRepository.GetByIdAsync(id);
 	}
 
-	public async Task<Community?> GetByIdWithIncludeAsync(int id)
-	{
-		return await unitOfWork.CommunityRepository.GetAllWithIncludes()
-			.SingleOrDefaultAsync(c => c.Id == id);
-	}
+
 
 	public async Task<IEnumerable<Community>> FindAsync(
 		Expression<Func<Community, bool>> predicate)
@@ -44,12 +37,7 @@ public class CommunityService(IUnitOfWork unitOfWork) : ICommunityService
 		return await unitOfWork.CommunityRepository.GetAll().Where(predicate)
 			.ToListAsync();
 	}
-	public async Task<IEnumerable<Community>> FindWithIncludeAsync(
-		Expression<Func<Community, bool>> predicate)
-	{
-		return await unitOfWork.CommunityRepository.GetAllWithIncludes().Where(predicate)
-			.ToListAsync();
-	}
+
 
 
 	public async Task CreateAsync(Community newCommunity)
@@ -113,10 +101,7 @@ public class CommunityService(IUnitOfWork unitOfWork) : ICommunityService
 	//{
 
 	//}
-	public async Task<int> CountAsync()
-	{
-		return await unitOfWork.CommunityRepository.GetAll().CountAsync();
-	}
+
 
 	public async Task<CommunityDetailsViewModel> GetCommunityDetailsAsync(int id, int page)
 	{

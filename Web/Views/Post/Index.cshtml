@@ -1,0 +1,33 @@
+﻿@model Post
+
+
+
+<h3>
+	<a asp-action="Details" asp-controller="Community" asp-route-id="@Model.CommunityId">@Model.Community.Name</a>
+</h3>
+
+<h3>
+	<a asp-action="Profile" asp-controller="Account" asp-route-UserName="@Model.User.UserName">@Model.User.UserName</a>
+</h3>
+
+<h4>@Model.CreatedAt</h4>
+<hr />
+
+<h1>@Model.Title</h1>
+
+<p>@Model.Content</p>
+
+<hr />
+<h4>Comments</h4>
+
+@foreach(var comment in Model.Comments)
+{
+	<p>
+		@comment.CreatedAt
+	</p>
+	<p>
+		@comment.Content
+	</p>
+	<div id="replies_@comment.Id"></div>
+	<input type="button" value="Show Replies" onclick="GetReplis(@comment.Id)" />
+}

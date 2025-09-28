@@ -14,7 +14,7 @@ namespace Web.Controllers
 			IUserService userService
 		) : Controller
 	{
-		public async Task<IActionResult> Profile(string? userName, int page = 1)
+		public async Task<IActionResult> Profile(string? username, int page = 1)
 		{
 
 
@@ -25,10 +25,10 @@ namespace Web.Controllers
 			var viewModel = new ProfileViewModel();
 
 
-			if (await userService.IsExistByNameAsync(userName))
+			if (await userService.IsExistByNameAsync(username))
 			{
-				viewModel.Name = userName;
-				viewModel.posts = await userService.GetPostsOfUserByUserNameAsync(userName, page);
+				viewModel.Name = username;
+				viewModel.posts = await userService.GetPostsOfUserByUserNameAsync(username, page);
 				viewModel.IsOwner = false;
 
 			}

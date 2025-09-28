@@ -1,6 +1,7 @@
 using Core.Interfaces;
 using Core.Interfaces.Services;
 using Core.Models;
+using Core.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using X.PagedList;
@@ -16,10 +17,7 @@ public class PostService(IUnitOfWork unitOfWork) : IPostService
 			.ToListAsync();
 	}
 
-	public async Task<IEnumerable<Post>> GetAllWithIncludesAsync()
-	{
-		return await unitOfWork.PostRepository.GetAllWithIncludes().ToListAsync();
-	}
+
 
 
 
@@ -28,11 +26,7 @@ public class PostService(IUnitOfWork unitOfWork) : IPostService
 		return await unitOfWork.PostRepository.GetByIdAsync(id);
 	}
 
-	public async Task<Post?> GetByIdWithIncludeAsync(int id)
-	{
-		return await unitOfWork.PostRepository.GetAllWithIncludes()
-			.SingleOrDefaultAsync(c => c.Id == id);
-	}
+
 
 	public async Task<IEnumerable<Post>> FindAsync(
 		Expression<Func<Post, bool>> predicate)
@@ -40,12 +34,7 @@ public class PostService(IUnitOfWork unitOfWork) : IPostService
 		return await unitOfWork.PostRepository.GetAll().Where(predicate)
 			.ToListAsync();
 	}
-	public async Task<IEnumerable<Post>> FindWithIncludeAsync(
-		Expression<Func<Post, bool>> predicate)
-	{
-		return await unitOfWork.PostRepository.GetAllWithIncludes().Where(predicate)
-			.ToListAsync();
-	}
+
 
 
 	public async Task CreateAsync(Post newPost)
@@ -98,8 +87,67 @@ public class PostService(IUnitOfWork unitOfWork) : IPostService
 	}
 
 
-	public async Task<int> CountAsync()
+
+
+	public Task<Post?> GetPostDetails(int id)
 	{
-		return await unitOfWork.PostRepository.GetAll().CountAsync();
+		var post = unitOfWork.PostRepository
+			.GetAll()
+			.Include(e => e.User)
+			.Include(e => e.Community)
+			.Include(e => e.Comments)
+			.SingleOrDefaultAsync(e => e.Id == id);
+
+		return post;
+
+
 	}
+
+	public bool IsOwner(Post post, string userId)
+	{
+		return userId == post.UserId;
+	}
+	public async Task<bool> IsOwnerAsync(int id, string userId)
+	{
+
+
+		return await unitOfWork.PostRepository.GetAll().AnyAsync(e => e.UserId == userId && e.Id == id);
+	}
+
+	public async Task<int> CreateAsync(PostViewModel post, string userId)
+	{
+		var newPost = new Post
+		{
+			Title = post.Title,
+			Content = post.Content,
+			UserId = userId,
+			CommunityId = post.CommunityId
+		};
+
+		await unitOfWork.PostRepository.AddAsync(newPost);
+		await unitOfWork.SaveChangeAsync();
+
+		return newPost.Id;
+	}
+
+
+
+	public Task<Post?> GetByIdAndUserIdAsync(int id, string userId)
+	{
+		return unitOfWork.PostRepository.GetAll().SingleOrDefaultAsync(e => e.Id == id && e.UserId == userId);
+	}
+
+	public async Task<int> UpdateAsync(PostViewModel post)
+	{
+		var oldPost = await unitOfWork.PostRepository.GetByIdAsync(post.Id);
+
+		oldPost.Title = post.Title;
+		oldPost.Content = post.Content;
+
+		await unitOfWork.SaveChangeAsync();
+
+		return post.Id;
+	}
+
+
 }
