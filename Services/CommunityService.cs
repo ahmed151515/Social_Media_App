@@ -125,7 +125,8 @@ public class CommunityService(IUnitOfWork unitOfWork) : ICommunityService
 				CommunityName = community.Name,
 				CommunityId = community.Id,
 				AuthorId = e.UserId,
-				AuthorName = e.User.UserName
+				AuthorName = e.User.UserName,
+				CreatedAt = e.CreatedAt
 			})
 			.ToPagedListAsync(page, size);
 

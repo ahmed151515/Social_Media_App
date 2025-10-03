@@ -11,7 +11,7 @@
         </h5>
 
         <div class="card-subtitle mb-2 text-muted small">
-            <span>Posted on @Model.CreatedAt.ToString("MMM dd, yyyy")</span>
+            <span>Posted on @Model.CreatedAt</span>
 
           
             @*
@@ -22,7 +22,7 @@
                 <span>
                     in 
                     <a class="fw-bold text-muted text-decoration-none" asp-controller="Communities" asp-action="Details" asp-route-id="@Model.CommunityId">
-                        r/@Model.CommunityName
+                        @Model.CommunityName
                     </a>
                 </span>
             }
@@ -34,7 +34,7 @@
                 <span>
                     by
                     <a class="fw-bold text-muted text-decoration-none" asp-controller="Account" asp-action="Profile" asp-route-username="@Model.AuthorName">
-                        u/@Model.AuthorName
+                        @Model.AuthorName
                     </a>
                 </span>
             }

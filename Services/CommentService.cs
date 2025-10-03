@@ -1,6 +1,7 @@
 using Core.Interfaces;
 using Core.Interfaces.Services;
 using Core.Models;
+using Core.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using X.PagedList;
@@ -84,5 +85,77 @@ public class CommentService(IUnitOfWork unitOfWork) : ICommentService
 
 	}
 
+	public async Task<List<CommentViewModel>> GetCommentRepliesAsync(int id)
+	{
+		var replies = await unitOfWork.CommentRepository
+			.GetAll()
 
+			.Where(e => e.Id == id)
+			.SelectMany(e => e.Replies)
+			.Select(e => new CommentViewModel
+			{
+				Id = e.Id,
+				Content = e.Content,
+				CreatedAt = e.CreatedAt,
+				ParentCommentId = e.ParentCommentId,
+				PostId = e.PostId,
+				UserId = e.UserId,
+				Username = e.User.UserName,
+				ParentCommentUsername = e.ParentComment.User.UserName,
+				CountOfReplies = e.Replies.Count()
+
+			})
+			.ToListAsync();
+
+		return replies;
+	}
+
+	public async Task CreateAsync(CommentCreateEditDeleteViewModel comment, string userId)
+	{
+
+		var newComment = new Comment
+		{
+			Content = comment.Content,
+			UserId = userId,
+			PostId = comment.PostId,
+			ParentCommentId = comment.ParentCommentId,
+
+		};
+
+		await unitOfWork.CommentRepository.AddAsync(newComment);
+
+		await unitOfWork.SaveChangeAsync();
+	}
+
+	public async Task<Comment?> GetByIdAndUserIdAsync(int id, string userId)
+	{
+		var comment = await unitOfWork.CommentRepository.GetAll()
+			.Where(e => e.Id == id && e.UserId == userId)
+			.SingleOrDefaultAsync();
+
+
+		return comment;
+	}
+	public async Task<bool> IsOwnerAsync(int id, string userId)
+	{
+		return await unitOfWork.CommentRepository.GetAll().AnyAsync(e => e.Id == id && e.UserId == userId);
+	}
+
+	public async Task Update(CommentCreateEditDeleteViewModel comment)
+	{
+		var oldCommnet = await unitOfWork.CommentRepository.GetByIdAsync(comment.Id);
+
+		oldCommnet.Content = comment.Content;
+
+		await unitOfWork.SaveChangeAsync();
+	}
+
+	public async Task Delete(CommentCreateEditDeleteViewModel commentData)
+	{
+		var commnet = await unitOfWork.CommentRepository.GetByIdAsync(commentData.Id);
+
+		unitOfWork.CommentRepository.Delete(commnet);
+
+		await unitOfWork.SaveChangeAsync();
+	}
 }

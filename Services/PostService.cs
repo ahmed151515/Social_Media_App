@@ -89,14 +89,34 @@ public class PostService(IUnitOfWork unitOfWork) : IPostService
 
 
 
-	public Task<Post?> GetPostDetails(int id)
+	public async Task<PostDetailsViewModel?> GetPostDetailsAsync(int id)
 	{
-		var post = unitOfWork.PostRepository
+		var post = await unitOfWork.PostRepository
 			.GetAll()
-			.Include(e => e.User)
-			.Include(e => e.Community)
-			.Include(e => e.Comments)
-			.SingleOrDefaultAsync(e => e.Id == id);
+
+			.Where(e => e.Id == id)
+			.Select(e => new PostDetailsViewModel
+			{
+				Id = e.Id,
+				Title = e.Title,
+				Content = e.Content,
+				User = e.User,
+				Community = e.Community,
+				CommunityId = e.CommunityId,
+				CreatedAt = e.CreatedAt,
+				Comments = e.Comments
+				.Where(c => c.ParentCommentId == null)
+				.Select(c => new CommentViewModel
+				{
+					Id = c.Id,
+					Content = c.Content,
+					CreatedAt = c.CreatedAt,
+					Username = c.User.UserName,
+					CountOfReplies = c.Replies.Count()
+				}).ToList()
+			}).SingleOrDefaultAsync();
+
+
 
 		return post;
 

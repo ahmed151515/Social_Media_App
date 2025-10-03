@@ -1,5 +1,4 @@
 ﻿using Core.Interfaces.Services;
-using Core.Models;
 using Core.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,7 @@ namespace Web.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> Index(int id)
 		{
-			Post post = await postService.GetPostDetails(id);
+			var post = await postService.GetPostDetailsAsync(id);
 
 			if (post is null)
 			{

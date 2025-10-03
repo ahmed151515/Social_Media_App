@@ -1,4 +1,4 @@
-﻿@model Post
+﻿@model PostDetailsViewModel
 
 
 
@@ -18,16 +18,55 @@
 <p>@Model.Content</p>
 
 <hr />
-<h4>Comments</h4>
-
+<a asp-action="Create" asp-controller="Comment" asp-route-postId="@Model.Id" class="btn btn-primary">Create Comment</a>
+<hr />
+<h4>Comments:</h4>
+<br />
 @foreach(var comment in Model.Comments)
 {
+ <a asp-action="Profile" asp-controller="Account" asp-route-username="@comment.Username">@comment.Username</a>
 	<p>
 		@comment.CreatedAt
 	</p>
 	<p>
 		@comment.Content
 	</p>
-	<div id="replies_@comment.Id"></div>
-	<input type="button" value="Show Replies" onclick="GetReplis(@comment.Id)" />
+	<a asp-action="Create" asp-controller="Comment" asp-route-postId="@Model.Id" asp-route-parentarId="@comment.Id" class="btn btn-primary">reply</a>
+
+	@if (User.Identity.IsAuthenticated && User.Identity.Name == comment.Username)
+	{
+		
+	<a asp-action="Edit" asp-controller="Comment" asp-route-Id="@comment.Id" class="btn btn-primary">Edit</a>
+	<a asp-action="Delete" asp-controller="Comment" asp-route-Id="@comment.Id" class="btn btn-danger">Delete</a>
+	}
+	<div id="replies_@comment.Id">
+
+		<input type="button" value="Show Replies @comment.CountOfReplies" onclick="GetReplis(@comment.Id,@comment.CountOfReplies)" />
+
+	</div>
+	<hr />
+}
+
+@section Scripts {
+		<script>
+				function GetReplis(id, countOfReplies) {
+			$.ajax({
+				url: "/Comment/GetCommentReplies/" + id,
+				success: function(result) {
+					const container = document.getElementById("replies_" + id);
+					if (!container) return;
+					container.innerHTML = result
+						+ `<input type='button' value='Hide Replies' onclick='HideReplis(${id}, ${countOfReplies})' />`;
+				},
+				error: function() {  }
+			});
+		}
+
+		function HideReplis(id, countOfReplies) {
+			const container = document.getElementById("replies_" + id);
+			if (!container) return;
+			container.innerHTML = `<input type='button' value='Show Replies' onclick='GetReplis(${id}, ${countOfReplies})' />`;
+		}
+
+		</script>
 }
