@@ -1,13 +1,17 @@
 ﻿@model Core.ViewModel.PostCardViewModel
 
 
-<div class="card mb-3 shadow-sm">
+
+<div class="card mb-3 shadow-sm"
+     style="cursor:pointer;"
+     onclick="window.location='@Url.Action("Index", "Post", new { id = Model.Id })'">
+
     <div class="card-body">
 
         <h5 class="card-title">
-            <a class="text-decoration-none" asp-controller="Post" asp-action=""  asp-route-id="@Model.Id">
+            
                 @Model.Title
-            </a>
+           
         </h5>
 
         <div class="card-subtitle mb-2 text-muted small">
@@ -20,8 +24,8 @@
             @if (!string.IsNullOrEmpty(Model.CommunityName))
             {
                 <span>
-                    in 
-                    <a class="fw-bold text-muted text-decoration-none" asp-controller="Communities" asp-action="Details" asp-route-id="@Model.CommunityId">
+                    in
+                    <a class="fw-bold text-muted text-decoration-none" asp-controller="Community" asp-action="Details" asp-route-id="@Model.CommunityId">
                         @Model.CommunityName
                     </a>
                 </span>
@@ -43,7 +47,10 @@
         
 
         <hr />
-        
+        <p class="card-text">
+            @(Model.Content.Length > 100 ? Model.Content.Substring(0, 100) + "..." : Model.Content)
+        </p>
 
     </div>
 </div>
+    

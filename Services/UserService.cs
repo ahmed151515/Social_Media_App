@@ -62,7 +62,8 @@ namespace Services
 					CommunityId = e.CommunityId,
 					Title = e.Title,
 					CreatedAt = e.CreatedAt,
-					Id = e.Id
+					Id = e.Id,
+					Content = e.Content
 
 				});
 			return await viewModel.ToPagedListAsync(page, size);
