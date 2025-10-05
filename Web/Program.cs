@@ -47,6 +47,7 @@ public class Program
 		builder.Services.AddScoped<ICommunityService, CommunityService>();
 		builder.Services.AddScoped<IUserService, UserService>();
 		builder.Services.AddScoped<IMembershipService, MembershipService>();
+		builder.Services.AddScoped<IHomeService, HomeService>();
 
 
 		var app = builder.Build();
