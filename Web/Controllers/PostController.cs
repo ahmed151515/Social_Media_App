@@ -2,12 +2,12 @@
 using Core.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Web.Extension;
 
 namespace Web.Controllers
 {
 	[Authorize]
-	public class PostController(IPostService postService) : Controller
+	public class PostController(IPostService postService, IMembershipService membershipService) : Controller
 	{
 		[AllowAnonymous]
 		public async Task<IActionResult> Index(int id)
@@ -26,8 +26,15 @@ namespace Web.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Create(int communityId)
+		public async Task<IActionResult> Create(int communityId)
 		{
+			var userId = User.GetUserId();
+
+			if (await membershipService.IsJoinAsync(userId, communityId) == false)
+			{
+				return Forbid();
+			}
+
 			var viewModel = new PostViewModel
 			{
 				CommunityId = communityId
@@ -43,7 +50,12 @@ namespace Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var userId = User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value;
+				var userId = User.GetUserId();
+
+				if (await membershipService.IsJoinAsync(userId, post.CommunityId) == false)
+				{
+					return Forbid();
+				}
 
 
 				var id = await postService.CreateAsync(post, userId);
@@ -57,7 +69,7 @@ namespace Web.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
-			var userId = User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value;
+			var userId = User.GetUserId();
 			var post = await postService.GetByIdAndUserIdAsync(id, userId);
 
 			if (post is null)
@@ -80,7 +92,7 @@ namespace Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var userId = User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value;
+				var userId = User.GetUserId();
 
 				if (await postService.IsOwnerAsync(post.Id, userId) == false)
 				{
@@ -103,7 +115,7 @@ namespace Web.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Delete(int id)
 		{
-			var userId = User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value;
+			var userId = User.GetUserId();
 			var post = await postService.GetByIdAndUserIdAsync(id, userId);
 
 			if (post is null)
@@ -127,7 +139,7 @@ namespace Web.Controllers
 		{
 
 
-			var userId = User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value;
+			var userId = User.GetUserId();
 
 			if (await postService.IsOwnerAsync(id, userId) == false)
 			{

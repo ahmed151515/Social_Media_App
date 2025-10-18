@@ -1,4 +1,6 @@
-﻿using Core.Interfaces;
+﻿using Core.Constants;
+using Core.Extension;
+using Core.Interfaces;
 using Core.Interfaces.Services;
 using Core.Models;
 using Core.ViewModel;
@@ -106,7 +108,6 @@ public class CommunityService(IUnitOfWork unitOfWork) : ICommunityService
 	public async Task<CommunityDetailsViewModel> GetCommunityDetailsAsync(int id, int page)
 	{
 		if (page < 1) page = 1;
-		var size = 20;
 		var community = await GetByIdAsync(id);
 		if (community is null)
 		{
@@ -118,19 +119,8 @@ public class CommunityService(IUnitOfWork unitOfWork) : ICommunityService
 			.Include(e => e.User)
 			.Where(e => e.CommunityId == id)
 			.OrderByDescending(e => e.CreatedAt)
-			.Select(e => new PostCardViewModel
-			{
-				Id = e.Id,
-				Title = e.Title,
-				CommunityName = community.Name,
-				CommunityId = community.Id,
-				AuthorId = e.UserId,
-				AuthorName = e.User.UserName,
-				CreatedAt = e.CreatedAt,
-				Content = e.Content
-
-			})
-			.ToPagedListAsync(page, size);
+			.Select(PostProjection.ToPostCardViewModel())
+			.ToPagedListAsync(page, PagedConstant.Size);
 
 
 

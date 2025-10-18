@@ -18,32 +18,17 @@ namespace Web.Controllers
 		{
 
 
-			if (page < 1) page = 1;
 
 
 
-			var viewModel = new ProfileViewModel();
 
+			var viewModel = await userService.GetProfile(username, User, page);
 
-			if (await userService.IsExistByNameAsync(username))
-			{
-				viewModel.Name = username;
-				viewModel.posts = await userService.GetPostsOfUserByUserNameAsync(username, page);
-				viewModel.IsOwner = false;
-
-			}
-			else if (User.Identity.IsAuthenticated)
-			{
-				var name = User.Identity.Name;
-				viewModel.Name = name;
-				viewModel.posts = await userService.GetPostsOfUserByUserNameAsync(name, page);
-
-				viewModel.IsOwner = true;
-			}
-			else
+			if (viewModel is null)
 			{
 				return NotFound();
 			}
+
 			return View(viewModel);
 		}
 

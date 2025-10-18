@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Web.Extension;
 
 namespace Web.Controllers
 {
@@ -31,7 +32,7 @@ namespace Web.Controllers
 			var viewModel = await communityService.GetCommunityDetailsAsync(id, page);
 			if (User.Identity.IsAuthenticated)
 			{
-				var userId = User.Claims.Single(e => e.Type == ClaimTypes.NameIdentifier).Value;
+				var userId = User.GetUserId();
 				viewModel.IsJoin = await membershipService.IsJoinAsync(userId, id);
 
 			}
@@ -51,7 +52,7 @@ namespace Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var userId = User.Claims.Single(e => e.Type == ClaimTypes.NameIdentifier).Value;
+				var userId = User.GetUserId();
 				await communityService.CreateAsync(community, userId);
 
 				return RedirectToAction("Details", new { id = community.Id });

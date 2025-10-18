@@ -5,26 +5,25 @@
 <h1>@Model.Name</h1>
 <p>@Model.Description</p>
 <hr>
-@if (User.Identity.IsAuthenticated)
-{
-	if (Model.IsJoin)
+	@if (Model.IsJoin)
 	{
 
 		<a asp-action="Leave" class="btn btn-primary" asp-route-id="@Model.Id">Leave</a>
-
+<hr />
+<a asp-action="Create" asp-controller="Post" asp-route-communityId="@Model.Id" class="btn btn-primary">Create new Post</a>
 	}
 	else
 	{
 		<a asp-action="Join" class="btn btn-primary" asp-route-id="@Model.Id">Join</a>
 	}
 
-}
 
-<hr />
-<a asp-action="Create" asp-controller="Post" asp-route-communityId="@Model.Id" class="btn btn-primary">Create new Post</a>
+
+
 <hr />
 @foreach(var post in Model.Posts)
 {
+	
 	<partial name="_postCardPartial" model="post" />
 }
 

@@ -2,7 +2,7 @@
 using Core.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Web.Extension;
 
 namespace Web.Controllers
 {
@@ -30,7 +30,7 @@ namespace Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var userId = User.Claims.SingleOrDefault(e => e.Type == ClaimTypes.NameIdentifier).Value;
+				var userId = User.GetUserId();
 
 
 
@@ -46,7 +46,7 @@ namespace Web.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
-			var userId = User.Claims.Single(e => e.Type == ClaimTypes.NameIdentifier).Value;
+			var userId = User.GetUserId();
 			var comment = await commentService.GetByIdAndUserIdAsync(id, userId);
 
 			if (comment is null)
@@ -70,7 +70,7 @@ namespace Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var userId = User.Claims.SingleOrDefault(e => e.Type == ClaimTypes.NameIdentifier).Value;
+				var userId = User.GetUserId();
 
 				if (await commentService.IsOwnerAsync(comment.Id, userId) == false)
 				{
@@ -89,7 +89,7 @@ namespace Web.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Delete(int id)
 		{
-			var userId = User.Claims.Single(e => e.Type == ClaimTypes.NameIdentifier).Value;
+			var userId = User.GetUserId();
 			var comment = await commentService.GetByIdAndUserIdAsync(id, userId);
 
 			if (comment is null)
@@ -112,7 +112,7 @@ namespace Web.Controllers
 		public async Task<IActionResult> Delete(CommentCreateEditDeleteViewModel comment)
 		{
 
-			var userId = User.Claims.SingleOrDefault(e => e.Type == ClaimTypes.NameIdentifier).Value;
+			var userId = User.GetUserId();
 
 			if (await commentService.IsOwnerAsync(comment.Id, userId) == false)
 			{
