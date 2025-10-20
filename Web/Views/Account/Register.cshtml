@@ -1,46 +1,44 @@
-﻿@model Core.ViewModel.RegisterViewModel
+@model Core.ViewModel.RegisterViewModel
 
-@{
-    ViewData["Title"] = "Register";
+@{    ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_FormLayout.cshtml";
 }
 
-<h1>Register</h1>
+<div class="text-center mb-4">
+    <h1 class="h3 mb-3 fw-normal">Create an Account</h1>
+    <p>Join learn today.</p>
+</div>
 
-<h4>RegisterModelView</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Register" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Register">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="form-floating mb-3">
+        <input asp-for="UserName" class="form-control" placeholder="Username" />
+        <label asp-for="UserName"></label>
+        <span asp-validation-for="UserName" class="text-danger small"></span>
     </div>
-</div>
-<hr />
-<div>
-    <a asp-action="Login" class="btn btn-primary">Login</a>
-</div>
 
+    <div class="form-floating mb-3">
+        <input asp-for="Email" class="form-control" placeholder="name@example.com" />
+        <label asp-for="Email"></label>
+        <span asp-validation-for="Email" class="text-danger small"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input asp-for="Password" class="form-control" placeholder="Password" />
+        <label asp-for="Password"></label>
+        <span asp-validation-for="Password" class="text-danger small"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+        <label asp-for="ConfirmPassword"></label>
+        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+    </div>
+
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+</form>
+
+<div class="text-center mt-4">
+    <p class="text-muted">Already have an account? <a asp-action="Login">Login</a></p>
+</div>

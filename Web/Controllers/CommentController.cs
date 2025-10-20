@@ -79,7 +79,7 @@ namespace Web.Controllers
 
 				await commentService.Update(comment);
 
-				return RedirectToAction("Inedx", "Post", new { id = comment.PostId });
+				return RedirectToAction("Index", "Post", new { id = comment.PostId });
 			}
 
 
@@ -121,7 +121,7 @@ namespace Web.Controllers
 
 			await commentService.Delete(comment);
 
-			return RedirectToAction("Inedx", "Post", new { id = comment.PostId });
+			return RedirectToAction("Index", "Post", new { id = comment.PostId });
 
 
 

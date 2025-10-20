@@ -1,30 +1,74 @@
-﻿@model Core.ViewModel.CommunityDetailsViewModel
+@model Core.ViewModel.CommunityDetailsViewModel
 
-
-
-<h1>@Model.Name</h1>
-<p>@Model.Description</p>
-<hr>
-	@if (Model.IsJoin)
-	{
-
-		<a asp-action="Leave" class="btn btn-primary" asp-route-id="@Model.Id">Leave</a>
-<hr />
-<a asp-action="Create" asp-controller="Post" asp-route-communityId="@Model.Id" class="btn btn-primary">Create new Post</a>
-	}
-	else
-	{
-		<a asp-action="Join" class="btn btn-primary" asp-route-id="@Model.Id">Join</a>
-	}
-
-
-
-
-<hr />
-@foreach(var post in Model.Posts)
-{
-	
-	<partial name="_postCardPartial" model="post" />
+@{   ViewData["Title"] = Model.Name;
 }
 
-@Html.PagedListPager(Model.Posts,page=>Url.Action("Datails",new{page,id=Model.Id}))
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h2 class="mb-0">@Model.Name</h2>
+                        <p class="text-muted">@Model.Description</p>
+                    </div>
+                    <div>
+                        @if (Model.IsJoin)
+                        {
+                            <a asp-action="Leave" class="btn btn-outline-secondary" asp-route-id="@Model.Id">Leave</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Join" class="btn btn-primary" asp-route-id="@Model.Id">Join</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.IsJoin)
+        {
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1 me-2">
+                            <a asp-action="Create" asp-controller="Post" asp-route-communityId="@Model.Id"
+                               class="form-control text-muted text-decoration-none"
+                               style="cursor:pointer;">
+                                Create Post
+                            </a>
+                        </div>
+                        <div>
+                            <a href="#" class="btn btn-link text-secondary"><i class="bi bi-image"></i></a>
+                            <a href="#" class="btn btn-link text-secondary"><i class="bi bi-link-45deg"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.Posts.Any())
+        {
+            foreach (var post in Model.Posts)
+            {
+                <partial name="_PostCardPartial" model="post" />
+            }
+
+            <div class="d-flex justify-content-center mt-4">
+                @Html.PagedListPager(Model.Posts, page => Url.Action("Details", new { page, id = Model.Id }), new PagedListRenderOptions
+                {
+                    LiElementClasses = new[] { "page-item" },
+                    PageClasses = new[] { "page-link" }
+                })
+            </div>
+        }
+        else
+        {
+            <div class="text-center p-5 border rounded bg-white shadow-sm">
+                <h4>No posts here yet.</h4>
+                <p class="text-muted">Be the first to share something in this community!</p>
+            </div>
+        }
+    </div>
+</div>

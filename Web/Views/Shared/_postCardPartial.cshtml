@@ -1,56 +1,66 @@
-﻿@model Core.ViewModel.PostCardViewModel
+@model Core.ViewModel.PostCardViewModel
 
-
-
-<div class="card mb-3 shadow-sm"
-     style="cursor:pointer;"
-     onclick="window.location='@Url.Action("Index", "Post", new { id = Model.Id })'">
-
+<div class="card mb-3 shadow-sm">
     <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <div>
+                <div class="text-muted small mb-2">
+                    @if (!string.IsNullOrEmpty(Model.CommunityName))
+                    {
+                        <span>
+                            <a class="fw-bold text-dark text-decoration-none" asp-controller="Community" asp-action="Details" asp-route-id="@Model.CommunityId">
+                                r/@Model.CommunityName
+                            </a>
+                            <span class="mx-1">•</span>
+                        </span>
+                    }
+                    <span>
+                        Posted by
+                        <a class="text-muted text-decoration-none" asp-controller="Account" asp-action="Profile" asp-route-username="@Model.AuthorName">
+                            u/@Model.AuthorName
+                        </a>
+                    </span>
+                    <span>
+                        <span class="mx-1">•</span> @Model.CreatedAt.ToString("dd MMM yyyy")
+                    </span>
+                </div>
 
-        <h5 class="card-title">
-            
-                @Model.Title
-           
-        </h5>
-
-        <div class="card-subtitle mb-2 text-muted small">
-            <span>Posted on @Model.CreatedAt</span>
-
-          
-            @*
-                if i  show posts in community this will null
-            *@
-            @if (!string.IsNullOrEmpty(Model.CommunityName))
-            {
-                <span>
-                    in
-                    <a class="fw-bold text-muted text-decoration-none" asp-controller="Community" asp-action="Details" asp-route-id="@Model.CommunityId">
-                        @Model.CommunityName
+                <h5 class="card-title mb-1">
+                    <a class="text-dark text-decoration-none" asp-controller="Post" asp-action="Index" asp-route-id="@Model.Id">
+                        @Model.Title
                     </a>
-                </span>
-            }
-            @*
-                if i  show posts in Profile this will null
-            *@
-            @if (!string.IsNullOrEmpty(Model.AuthorName))
+                </h5>
+
+                <p class="card-text small">
+                    @Model.Content
+                </p>
+            </div>
+
+            @if (User.Identity != null && User.Identity.IsAuthenticated && User.GetUserId() == Model.AuthorId)
             {
-                <span>
-                    by
-                    <a class="fw-bold text-muted text-decoration-none" asp-controller="Account" asp-action="Profile" asp-route-username="@Model.AuthorName">
-                        @Model.AuthorName
-                    </a>
-                </span>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-link text-muted" type="button" id="dropdownMenuButton-@Model.Id" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton-@Model.Id">
+                        <li><a class="dropdown-item" asp-controller="Post" asp-action="Edit" asp-route-id="@Model.Id">Edit</a></li>
+                        <li><a class="dropdown-item text-danger" asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Id">Delete</a></li>
+                    </ul>
+                </div>
             }
         </div>
-        
-        
-
-        <hr />
-        <p class="card-text">
-            @Model.Content
-        </p>
-
     </div>
+    @* <div class="card-footer bg-transparent border-top-0">
+        <div class="d-flex align-items-center small text-muted">
+            <div class="me-3">
+                <i class="bi bi-chat-square"></i>
+                <span>Comments</span>
+            </div>
+            <div class="me-3">
+                <a href="#" class="text-muted text-decoration-none"><i class="bi bi-arrow-up-square"></i></a>
+                <span>Vote</span>
+                <a href="#" class="text-muted text-decoration-none"><i class="bi bi-arrow-down-square"></i></a>
+            </div>
+        </div>
+    </div> *@
 </div>
-    

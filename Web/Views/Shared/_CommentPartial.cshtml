@@ -1,0 +1,36 @@
+@model Core.ViewModel.CommentViewModel
+
+<div class="comment-thread">
+    <div class="comment d-flex">
+        <div class="comment-voting d-flex flex-column align-items-center me-2">
+            <a href="#" class="text-muted text-decoration-none"><i class="bi bi-arrow-up-square"></i></a>
+            <a href="#" class="text-muted text-decoration-none"><i class="bi bi-arrow-down-square"></i></a>
+            <div class="comment-connector"></div>
+        </div>
+        <div class="comment-body flex-grow-1">
+            <div class="comment-meta small text-muted mb-1">
+                <a asp-action="Profile" asp-controller="Account" asp-route-username="@Model.Username" class="fw-bold text-dark text-decoration-none">@Model.Username</a>
+                <span class="mx-1">•</span>
+                <span>@Model.CreatedAt.ToString("dd MMM yyyy")</span>
+            </div>
+            <div class="comment-content">
+                @Model.Content
+            </div>
+            <div class="comment-actions small mt-1">
+                <a asp-action="Create" asp-controller="Comment" asp-route-postId="@Model.PostId" asp-route-parentarId="@Model.Id" class="text-muted text-decoration-none me-2">Reply</a>
+                @if (User.Identity != null && User.Identity.IsAuthenticated && User.Identity.Name == Model.Username)
+                {
+                    <a asp-action="Edit" asp-controller="Comment" asp-route-Id="@Model.Id" class="text-muted text-decoration-none me-2">Edit</a>
+                    <a asp-action="Delete" asp-controller="Comment" asp-route-Id="@Model.Id" class="text-muted text-decoration-none">Delete</a>
+                }
+            </div>
+
+            <div id="replies_@Model.Id" class="mt-2">
+                @if (Model.CountOfReplies > 0)
+                {
+                    <a href="javascript:void(0)" class="small text-muted" onclick='GetReplis(@Model.Id, @Model.CountOfReplies)'>Show @Model.CountOfReplies Replies</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

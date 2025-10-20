@@ -1,14 +1,30 @@
-﻿@model IPagedList<PostCardViewModel>
+@model IPagedList<PostCardViewModel>
 
-@{
-    ViewData["Title"] = "Home Page";
+@{    ViewData["Title"] = "Home Page";
 }
 
 
-@foreach(var post  in Model)
+
+@if (Model.Any())
 {
-    <partial name="_PostCardPartial" model="post" />
+    foreach (var post in Model)
+    {
+        <partial name="_PostCardPartial" model="post" />
+    }
 
+    <div class="d-flex justify-content-center mt-4">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+        {
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        })
+    </div>
 }
-
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page}))
+else
+{
+    <div class="text-center p-5 border rounded bg-white shadow-sm">
+        <h4>No posts here yet.</h4>
+        <p class="text-muted">Browse communities to find interesting content.</p>
+        <a class="btn btn-primary mt-2" asp-controller="Community" asp-action="Index">Browse Communities</a>
+    </div>
+}

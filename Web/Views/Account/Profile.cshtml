@@ -1,29 +1,51 @@
-﻿@model Core.ViewModel.ProfileViewModel
 
-@{
-    ViewData["Title"] = "Profile";
-    
+@model Core.ViewModel.ProfileViewModel
+
+@{    ViewData["Title"] = $"Profile: {Model.Name}";
 }
 
-<h1>Profile</h1>
-<h2>@Model.Name</h2>
-<div>
-    @foreach(var post in Model.posts)
-    {
-        <partial name="_PostCardPartial" model="post" />
-        @if (Model.IsOwner)
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-person-circle" style="font-size: 4rem;"></i>
+                    <div class="ms-3">
+                        <h2 class="mb-0">@Model.Name</h2>
+                        <span class="text-muted small">@Model.Name</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs mb-3">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Posts</a>
+            </li>
+        </ul>
+
+        @if (Model.posts.Any())
         {
-            <a asp-action="Edit" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-primary">Edit</a>
-            <a asp-action="Delete" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-danger">Delete</a>
+            foreach (var post in Model.posts)
+            {
+                <partial name="_PostCardPartial" model="post" />
+            }
+
+            <div class="d-flex justify-content-center mt-4">
+                @Html.PagedListPager(Model.posts, page => Url.Action("Profile", new { page, username = Model.Name }), new PagedListRenderOptions
+                {
+                    LiElementClasses = new[] { "page-item" },
+                    PageClasses = new[] { "page-link" }
+                })
+            </div>
         }
         else
         {
-
+            <div class="text-center p-5 border rounded bg-white shadow-sm">
+                <h4>No posts here yet.</h4>
+                <p class="text-muted">This user hasn't posted anything.</p>
+            </div>
         }
-        <hr />
-    }
-
-    <hr>
-
-    @Html.PagedListPager(Model.posts, page => Url.Action("Profile", new { page,username=Model.Name }))
+    </div>
 </div>

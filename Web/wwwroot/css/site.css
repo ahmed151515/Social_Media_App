@@ -1,42 +1,133 @@
-﻿/* في نهاية ملف wwwroot/css/site.css */
-
-/* ============================================= */
-/* ====   CUSTOM LAYOUT STYLES   ==== */
-/* ============================================= */
-
-html, body {
-    height: 100%;
+/* Global Styles */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --light-gray: #f8f9fa;
+    --dark-gray: #343a40;
+    --border-color: #dee2e6;
 }
 
-header .navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1030;
+html {
+  font-size: 14px;
 }
 
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    padding-top: 70px; /* Height of the fixed navbar */
+    background-color: #f0f2f5; /* A light gray background for the body */
+}
+
+/* Sidebar Styles */
 .sidebar {
     position: fixed;
     top: 0;
-    left: 0;
     bottom: 0;
-    width: 240px;
-    padding-top: 56px;
-    background-color: #f8f9fa;
-    z-index: 1020;
-    /* ======== هنا الإضافة الجديدة ======== */
-    border-right: 1px solid #dee2e6; /* خط فاصل خفيف على اليمين */
+    left: 0;
+    z-index: 100; /* Behind the navbar */
+    padding: 70px 0 0; /* Same padding as body */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
+#sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+}
+
+#sidebar .nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* Main Content Styles */
 .main-content {
-    margin-left: 240px;
-    padding-top: 72px;
-    height: calc(100vh - 56px);
-    overflow-y: auto;
+    padding-top: 1.5rem;
 }
 
-@media (max-width: 767.98px) {
-    .main-content {
-        margin-left: 0;
-    }
+/* Card Styles */
+.card {
+    border: 1px solid var(--border-color);
+    transition: box-shadow .3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Form Control Styles */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+/* Comment Thread Styles */
+.comment-thread {
+    position: relative;
+}
+
+.comment-thread .comment-thread {
+    margin-left: 1.5rem; /* Indent replies */
+}
+
+.comment-connector {
+    position: absolute;
+    top: 20px;
+    bottom: 0;
+    left: 12px; /* Center in the voting section */
+    width: 2px;
+    background-color: var(--border-color);
+}
+
+.comment-body {
+    background-color: #fff;
+    border-radius: .25rem;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    width: 100%;
+}
+
+.comment-thread:hover > .comment > .comment-voting > .comment-connector {
+    background-color: var(--primary-color);
+}
+
+.comment-voting {
+    font-size: 1.2rem;
+}
+
+/* Form Layout Styles */
+.form-body {
+    background-color: var(--light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding-top: 0; /* Override body padding */
+}
+
+.form-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: .5rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 }

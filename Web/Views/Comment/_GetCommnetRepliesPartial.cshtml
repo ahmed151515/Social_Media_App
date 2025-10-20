@@ -1,20 +1,6 @@
-﻿@model List<CommentViewModel>
+@model List<CommentViewModel>
 
 @foreach(var reply in Model)
 {
-		@reply.CreatedAt 
-		<br />
-	<a asp-action="Profile" asp-controller="Account" asp-route-username="@reply.Username">@reply.Username</a>
-	<p>
-		<a asp-action="Profile" asp-controller="Account" asp-route-username="@reply.ParentCommentUsername">@reply.ParentCommentUsername</a> - @reply.Content
-	</p>
-	if (reply.CountOfReplies >= 1)
-	{
-		
-	<div id="replies_@reply.Id">
-			<input type="button" value="Show Replies @reply.CountOfReplies" onclick="GetReplis(@reply.Id,@reply.CountOfReplies)" />
-
-	</div>
-
-	}
+    @await Html.PartialAsync("_CommentPartial", reply)
 }

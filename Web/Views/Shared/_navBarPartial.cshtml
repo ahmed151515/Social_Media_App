@@ -1,39 +1,41 @@
-﻿@* ملف Views/Shared/_NavBarPartial.cshtml *@
+@* ملف Views/Shared/_NavBarPartial.cshtml *@
 
-<nav class="navbar navbar-expand-md navbar-light bg-light border-bottom fixed-top">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark border-bottom fixed-top shadow-sm">
     <div class="container-fluid">
-        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">learn</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                 aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <div class="navbar-collapse collapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                @* يمكنك إضافة روابط رئيسية هنا إذا أردت *@
-
-                <li>
-                    <a asp-action="Index" asp-controller="Community" class="nav-link text-dark">Communities</a>
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Community" class="nav-link">Communities</a>
                 </li>
+
             </ul>
             <ul class="navbar-nav">
-                @if (User.Identity is not null && User.Identity.IsAuthenticated)
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
                 {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Profile">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            @User.Identity.Name
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                        </ul>
                     </li>
                 }
                 else
                 {
-                    
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+                        <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
                     </li>
                 }
             </ul>
