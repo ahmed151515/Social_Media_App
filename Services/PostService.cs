@@ -112,7 +112,8 @@ public class PostService(IUnitOfWork unitOfWork) : IPostService
 					Content = c.Content,
 					CreatedAt = c.CreatedAt,
 					Username = c.User.UserName,
-					CountOfReplies = c.Replies.Count()
+					CountOfReplies = c.Replies.Count(),
+					PostId = c.PostId
 				}).ToList()
 			}).SingleOrDefaultAsync();
 
